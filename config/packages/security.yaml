@@ -14,6 +14,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            form_login:
+                login_path: app_login
+                check_path: app_login
+            logout:
+                path: /deconnexion
+                target: app_home
             lazy: true
             provider: app_user_provider
 
@@ -27,7 +33,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/compte, roles: ROLE_USER }
 
 when@test:
     security:

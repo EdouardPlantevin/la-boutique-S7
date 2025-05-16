@@ -30,7 +30,7 @@ final class RegisterController extends AbstractController
             $manager->flush();
 
             $this->addFlash('success', 'Merci pour votre inscription');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('register/index.html.twig', [

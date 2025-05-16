@@ -24,14 +24,14 @@
 <header data-bs-theme="dark">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">La Boutique S7</a>
+            <a class="navbar-brand" href="{{ path('app_home') }}">La Boutique S7</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -44,23 +44,40 @@
                     </li>
                 </ul>
                 <div class="speed-menu">
-                    <a href=""><i data-feather="user"></i></a>
-                    <a href=""><i data-feather="shopping-cart"></i></a>
+                    {% if app.user %}
+                        <a href="{{ path('app_account') }}"><i data-feather="user"></i> {{ app.user.firstname }}</a>
+                        <a href=""><i data-feather="shopping-cart"></i></a>
+                        <a href="{{ path('app_logout') }}"><i data-feather="log-out"></i></a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}"><i data-feather="user"></i></a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
     </nav>
 </header>
 
+
 <main>
 
 
-   {% block body %}{% endblock %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="my-2 alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="container my-5">
+        {% block body %}{% endblock %}
+    </div>
 
 
     <!-- FOOTER -->
     <footer class="container">
-        <p>&copy; 2017–2024 La Boutique S7 <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
+        <p>&copy; 2017–2025 La Boutique S7 <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
     </footer>
 </main>
 
