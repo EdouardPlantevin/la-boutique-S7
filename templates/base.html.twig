@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>La Boutique S7 - 100% Symfony 7 Wouhou</title>
+    <title>{% block title %}La Boutique S7 - 100% Symfony 7 Wouhou{% endblock %}</title>
+
     <meta name="description" content="La boutique spécialisée S7">
 
     <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
@@ -52,6 +53,7 @@
 </header>
 
 <main>
+
 
    {% block body %}{% endblock %}
 
