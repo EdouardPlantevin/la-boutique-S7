@@ -2,23 +2,17 @@
 
 namespace App\Controller;
 
-use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ProductController extends AbstractController
 {
     #[Route('/produit/{slug}', name: 'app_product')]
-    public function index($slug, ProductRepository $productRepository): Response
+    public function index(#[MapEntity(mapping: ['slug' => 'slug'])] Product $product): Response
     {
-        $product = $productRepository->findOneBy(['slug' => $slug]);
-
-        if (!$product) {
-            $this->addFlash('danger', 'Le produit: \'' . $slug . '\' n\'existe plus ou pas');
-            return $this->redirectToRoute('app_home');
-        }
-
         return $this->render('product/index.html.twig', [
             'product' => $product
         ]);
