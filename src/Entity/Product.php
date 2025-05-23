@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use App\Services\Tva;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -102,8 +103,7 @@ class Product
 
     public function getPriceTtc(): ?float
     {
-        $coeff = 1 + ($this->tva / 100);
-        return $coeff * $this->price;
+        return Tva::getPriceTTC($this->tva, $this->price);
     }
 
     public function getTva(): ?float

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderDetailRepository;
+use App\Services\Tva;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderDetailRepository::class)]
@@ -106,5 +107,13 @@ class OrderDetail
         $this->productTva = $productTva;
 
         return $this;
+    }
+
+    /*
+     * Wt = With Tax
+     */
+    public function getProductPriceWt(): ?float
+    {
+        return Tva::getPriceTTC($this->productTva, $this->productPrice);
     }
 }

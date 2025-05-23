@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use App\Services\Tva;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -57,6 +58,9 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $stripe_session_id = null;
 
     public function __construct()
     {
@@ -174,8 +178,7 @@ class Order
         $totalTTC = 0;
         $products = $this->orderDetails;
         foreach ($products as $product) {
-            $coeff = 1 + ($product->getProductTva() / 100);
-            $totalTTC += ($product->getProductPrice() * $coeff) * $product->getProductQuantity();
+            $totalTTC += Tva::getPriceTTC($product->getProductTva(), $product->getProductPrice()) * $product->getProductQuantity();
         }
         return $totalTTC + $this->carrierPrice;
     }
@@ -184,9 +187,20 @@ class Order
         $totalTva = 0;
         $products = $this->orderDetails;
         foreach ($products as $product) {
-            $coeff = $product->getProductTva() / 100;
-            $totalTva += $product->getProductPrice() * $coeff;
+            $totalTva += Tva::getPriceTTC($product->getProductTva(), $product->getProductPrice());
         }
         return $totalTva;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripe_session_id;
+    }
+
+    public function setStripeSessionId(?string $stripe_session_id): static
+    {
+        $this->stripe_session_id = $stripe_session_id;
+
+        return $this;
     }
 }

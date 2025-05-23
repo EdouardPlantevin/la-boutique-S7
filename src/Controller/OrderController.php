@@ -83,8 +83,7 @@ final class OrderController extends AbstractController
                 ->setCarrierPrice($carriers->getPrice())
                 ->setCarrierName($carriers->getName())
                 ->setDelivery($addressDetail)
-                ->setUser($this->getUser())
-            ;
+                ->setUser($this->getUser());
 
             foreach ($products as $product) {
                 $orderDetail = new OrderDetail();
@@ -93,8 +92,7 @@ final class OrderController extends AbstractController
                     ->setProductIllustration($product['object']->getIllustration())
                     ->setProductPrice($product['object']->getPrice())
                     ->setProductQuantity($product['qty'])
-                    ->setProductTva($product['object']->getTva())
-                ;
+                    ->setProductTva($product['object']->getTva());
                 $order->addOrderDetail($orderDetail);
             }
 
@@ -106,6 +104,7 @@ final class OrderController extends AbstractController
             'choices' => $deliveryForm->getData(), //Choix de l'utilisateur de l'étape 1
             'cart' => $products,
             'totalTtc' => $cart->getTotalTtc(),
+            'orderId' => $order->getId(),
         ]);
     }
 }

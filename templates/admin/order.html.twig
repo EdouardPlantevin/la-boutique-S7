@@ -5,6 +5,7 @@
     <h3>Commande n°{{ order.id }}</h3>
     {{ include('admin/state.html.twig', {field: {'value': order.state}}) }}
     <span class="d-block mt-3">Passée le : {{ order.createdAt | date('d/m/Y') }}</span>
+    <span class="d-block mt-3">Stripe session Id : {{ order.stripeSessionId }}</span>
 
     <div class="row my-4">
 
@@ -36,13 +37,12 @@
         <tbody>
             {% for product in order.orderDetails %}
                 <tr>
-                    <td><img src="{{ asset('uploads/' ~ product.productillustration) }}" width="100px"></td>
+                    <td><img src="{{ asset('uploads/' ~ product.productillustration) }}" width="100px" alt="illustration"></td>
                     <td>{{ product.productName }}</td>
                     <td>{{ product.productQuantity }}</td>
                     <td>{{ product.productPrice|price }}</td>
                     <td>{{ product.productTva }}%</td>
-                    {% set coeff = 1 + (product.productTva / 100)  %}
-                    <td>{{ ((coeff * product.productPrice) * product.productQuantity) | price }}</td>
+                    <td>{{ product.productPriceWt | price }}</td>
                 </tr>
             {% endfor %}
             <tr>

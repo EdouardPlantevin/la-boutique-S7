@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250523073606 extends AbstractMigration
+final class Version20250523140928 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,9 +20,6 @@ final class Version20250523073606 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql(<<<'SQL'
-            ALTER TABLE `order` ADD user_id INT NOT NULL
-        SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE `order` ADD CONSTRAINT FK_F5299398A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)
         SQL);
@@ -39,9 +36,6 @@ final class Version20250523073606 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP INDEX IDX_F5299398A76ED395 ON `order`
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE `order` DROP user_id
         SQL);
     }
 }
