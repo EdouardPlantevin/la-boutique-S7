@@ -47,7 +47,10 @@ class ProductCrudController extends AbstractCrudController
                 ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
                 ->setRequired($pageName !== Crud::PAGE_EDIT),
             NumberField::new('price', 'Prix HT')
-                ->setHelp('Prix du produit HT sans le sigle €'),
+                ->setHelp('Prix du produit HT sans le sigle €')
+                ->formatValue(function ($value, $entity) {
+                    return number_format($value, 2, ',', ' ') . ' €';
+                }),
             ChoiceField::new('tva', 'TVA')
                 ->setChoices([
                     '5.5%' => '5.5',

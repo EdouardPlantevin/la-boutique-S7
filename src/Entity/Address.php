@@ -38,6 +38,11 @@ class Address
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    public function __toString(): string
+    {
+        return $this->firstname.' '.$this->lastname . '<br>'.$this->address.'<br>'.$this->city.' - '.$this->postal;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

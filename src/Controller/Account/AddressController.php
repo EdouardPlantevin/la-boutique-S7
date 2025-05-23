@@ -2,6 +2,7 @@
 
 namespace App\Controller\Account;
 
+use App\Classe\Cart;
 use App\Entity\Address;
 use App\Form\AddressUserTypeForm;
 use App\Repository\AddressRepository;
@@ -42,11 +43,11 @@ final class AddressController extends AbstractController
 
         $this->addFlash('success', 'L\'adresse à bien été supprimé');
 
-        return $this->render('account/index.html.twig');
+        return $this->redirectToRoute('app_account_address');
     }
 
     #[Route('/adresse/ajouter/{id}', name: 'app_account_address_form', defaults: ['id' => null])]
-    public function form($id, Request $request, AddressRepository $addressRepository): Response
+    public function form($id, Request $request, AddressRepository $addressRepository, Cart $cart): Response
     {
 
         if ($id) {
@@ -71,6 +72,11 @@ final class AddressController extends AbstractController
             $this->manager->flush();
 
             $this->addFlash('success', 'Votre adresse est correctement sauvegardée.');
+
+            if ($cart->fullQty() > 0) {
+                return $this->redirectToRoute('app_order');
+            }
+
             return $this->redirectToRoute('app_account_address');
         }
 
