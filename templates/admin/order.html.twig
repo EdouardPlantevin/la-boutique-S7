@@ -2,6 +2,8 @@
 
 {% block main %}
 
+
+    <a target="_blank" class="btn btn-light mb-1" href="{{ path('app_invoice_admin', {'id_order': order.id}) }}">Facture</a>
     <h3>Commande n°{{ order.id }}</h3>
     {{ include('admin/state.html.twig', {field: {'value': order.state}}) }}
     <span class="d-block mt-3">Passée le : {{ order.createdAt | date('d/m/Y') }}</span>
