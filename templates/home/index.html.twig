@@ -16,7 +16,7 @@
                     <div class="carousel-caption">
                         <h1>{{ header.title }}</h1>
                         <p>{{ header.content }}</p>
-                        <p><a class="btn btn-lg btn-primary" href="{{ header.buttonLink }}">{{ header.buttonTitle }}</a></p>
+                        <p><a class="btn btn-lg btn-light" href="{{ header.buttonLink }}">{{ header.buttonTitle }}</a></p>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="col-lg-4">
                 <img src="{{ asset('uploads/' ~ product.illustration) }}" class="bd-placeholder-img rounded-circle" width="140" height="140"><title>{{ product.name }}</title></img>
                 <h2 class="fw-normal">{{ product.name }}</h2>
-                <p><a class="btn btn-secondary mt-2" href="{{ path('app_product', {'slug': product.slug}) }}">Découvrir &raquo;</a></p>
+                <p><a class="btn btn-light mt-2" href="{{ path('app_product', {'slug': product.slug}) }}">Découvrir &raquo;</a></p>
             </div>
         {% endfor %}
     </div>

@@ -43,7 +43,8 @@
                 <div class="speed-menu">
                     {% if app.user %}
                         <a href="{{ path('app_account') }}"><i data-feather="user"></i> {{ app.user.firstname }}</a>
-                        <a href="{{ path('app_logout') }}"><i data-feather="log-out"></i></a>
+
+                        <a href="{{ path('app_account_wishlist') }}" class="link-danger"><i data-feather="heart"></i></a>
                     {% else %}
                         <a href="{{ path('app_login') }}"><i data-feather="user"></i></a>
                     {% endif %}
@@ -63,7 +64,7 @@
 
 
 <main>
-    <div class="container-fluid my-5">
+    <div class="container my-5">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="my-2 alert alert-{{ label }}">

@@ -13,7 +13,25 @@
             <h1>{{ product.name }}</h1>
             <span class="d-block mb-3">{{ product.priceTtc |price }}</span>
             {{ product.description |raw }}
-            <a href="{{ path('app_cart_add', {'id': product.id}) }}" class="btn btn-dark w-100 mt-3">Ajouter au panier</a>
+
+            <div class="d-flex align-items-center justify-content-between mt-3">
+                <a href="{{ path('app_cart_add', {'id': product.id}) }}" class="btn btn-success w-100">Ajouter au panier</a>
+                {% if product in app.user.wishlists %}
+                    <a
+                            href="{{ path('app_account_wishlist_remove', {'slug': product.slug})}}"
+                            class="whistlist-icon whistlist-icon-active"
+                            style="margin-left: 10px;">
+                        <i data-feather="heart"></i>
+                    </a>
+                {% else %}
+                    <a
+                            href="{{ path('app_account_wishlist_add', {'slug': product.slug})}}"
+                            class="whistlist-icon"
+                            style="margin-left: 10px;">
+                        <i data-feather="heart"></i>
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 
