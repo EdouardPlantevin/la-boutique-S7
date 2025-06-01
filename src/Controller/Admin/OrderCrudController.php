@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Classe\Mail;
 use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,12 +16,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderCrudController extends AbstractCrudController
 {
 
     public function __construct(
         private OrderRepository $orderRepository,
+        private EntityManagerInterface $entityManager,
     ){}
 
     public static function getEntityFqcn(): string
@@ -50,7 +55,7 @@ class OrderCrudController extends AbstractCrudController
         ;
     }
 
-    public function show(AdminContext $context)
+    public function show(AdminContext $context, AdminUrlGenerator $adminUrlGenerator, Request $request): Response
     {
         $id = $context->getRequest()->query->get('entityId');
 
@@ -64,8 +69,20 @@ class OrderCrudController extends AbstractCrudController
             throw $this->createNotFoundException("Commande #$id introuvable.");
         }
 
+        // Récupérer l'URL de l'action "SHOW"
+        $url = $adminUrlGenerator
+            ->setController(self::class)
+            ->setAction('show')
+            ->setEntityId($id)
+            ->generateUrl();
+
+        if ($state = $request->get('state')) {
+            $this->changeState($state, $order);
+        }
+
         return $this->render('admin/order.html.twig', [
             'order' => $order,
+            'current_url' => $url,
         ]);
     }
 
@@ -88,5 +105,29 @@ class OrderCrudController extends AbstractCrudController
                 }),
 
         ];
+    }
+
+    private function changeState(int $state, Order $order): void {
+        if (array_key_exists($state, Order::STATE) AND $state !== Order::STATE[$order->getState()]) {
+            $order->setState($state);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Statut de la commande correctement mis à jour.');
+
+
+            $vars = [
+                'firstname' => $order->getUser()->getFirstName(),
+                'id_order' => $order->getId(),
+            ];
+
+            $email = new Mail();
+            $email->send(
+                $order->getUser()->getEmail(),
+                $order->getUser()->getFullName(),
+                Order::STATE_EMAIL[$state]['email_subject'],
+                Order::STATE_EMAIL[$state]['email_template'],
+                $vars
+            );
+        }
     }
 }

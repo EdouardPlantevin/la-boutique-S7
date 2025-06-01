@@ -2,7 +2,13 @@
 
 {% block main %}
 
-
+    {% if order.state != constant('App\\Entity\\Order::PENDING_DEBIT') %}
+        <h2>Agir sur la commande</h2>
+        <a class="btn btn-warning {% if order.state == constant('App\\Entity\\Order::IN_PROGRESS') %}d-none{% endif %}" href="{{ current_url }}&state={{ constant('App\\Entity\\Order::IN_PROGRESS') }}">Commande en cours de préparation</a>
+        <a class="btn btn-success {% if order.state == constant('App\\Entity\\Order::SHIPPED') %}d-none{% endif %}" href="{{ current_url }}&state={{ constant('App\\Entity\\Order::SHIPPED') }}">Commande expédiée</a>
+        <a class="btn btn-danger {% if order.state == constant('App\\Entity\\Order::CANCELED') %}d-none{% endif %}" href="{{ current_url }}&state={{ constant('App\\Entity\\Order::CANCELED') }}">Commande annulé</a>
+    {% endif %}
+    <hr>
     <a target="_blank" class="btn btn-light mb-1" href="{{ path('app_invoice_admin', {'id_order': order.id}) }}">Facture</a>
     <h3>Commande n°{{ order.id }}</h3>
     {{ include('admin/state.html.twig', {field: {'value': order.state}}) }}

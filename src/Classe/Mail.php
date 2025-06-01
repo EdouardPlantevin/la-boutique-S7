@@ -17,7 +17,7 @@ class Mail
         try {
             $content = file_get_contents(dirname(__DIR__) . '/Mail/' . $template);
         } catch (\Exception $e) {
-            return false;
+            throw new \Exception('Mail template not found: ' . $template);
         }
 
         if ($vars) {
@@ -51,6 +51,7 @@ class Mail
         ];
 
         $response = $mj->post(Resources::$Email, ['body' => $body]);
+
         return $response->success();
     }
 

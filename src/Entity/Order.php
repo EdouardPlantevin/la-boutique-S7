@@ -14,14 +14,36 @@ use Doctrine\ORM\Mapping as ORM;
 class Order
 {
 
-    CONST PENDING_DEBIT = 1;
-    CONST PAID = 2;
-    CONST SHIPPED = 3;
+    const STATE_EMAIL = [
+          self::IN_PROGRESS => [
+              'label' => 'En cours de préparation',
+              'email_subject' => 'Commande en cours de préparation',
+              'email_template' => 'state_order_' . self::IN_PROGRESS . '.html',
+          ],
+        self::SHIPPED => [
+            'label' => 'Expédiée',
+            'email_subject' => 'Commande expédiée',
+            'email_template' => 'state_order_' . self::SHIPPED . '.html',
+        ],
+        self::CANCELED => [
+            'label' => 'Annulé',
+            'email_subject' => 'Commande annulé',
+            'email_template' => 'state_order_' . self::CANCELED . '.html',
+        ]
+    ];
 
-    CONST STATE = [
+    const PENDING_DEBIT = 1; //En attente de paiement
+    const PAID = 2; // Paiement validé
+    const SHIPPED = 3; // Expédié
+    const IN_PROGRESS = 4; // En cours de préparation
+    const CANCELED = 5; // Annulé
+
+    const STATE = [
         self::PENDING_DEBIT => self::PENDING_DEBIT,
         self::PAID => self::PAID,
         self::SHIPPED => self::SHIPPED,
+        self::IN_PROGRESS => self::IN_PROGRESS,
+        self::CANCELED => self::CANCELED,
     ];
 
     #[ORM\Id]
