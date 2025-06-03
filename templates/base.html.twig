@@ -45,6 +45,10 @@
                         <a href="{{ path('app_account') }}"><i data-feather="user"></i> {{ app.user.firstname }}</a>
 
                         <a href="{{ path('app_account_wishlist') }}" class="link-danger"><i data-feather="heart"></i></a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin') }}">Espace Admin</a>
+                        {% endif %}
                     {% else %}
                         <a href="{{ path('app_login') }}"><i data-feather="user"></i></a>
                     {% endif %}

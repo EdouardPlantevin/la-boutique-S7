@@ -114,7 +114,6 @@ class OrderCrudController extends AbstractCrudController
 
             $this->addFlash('success', 'Statut de la commande correctement mis à jour.');
 
-
             $vars = [
                 'firstname' => $order->getUser()->getFirstName(),
                 'id_order' => $order->getId(),
