@@ -8,24 +8,14 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
-class PasswordUserTypeForm extends AbstractType
+class ResetPasswordTypeForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('actualPassword', PasswordType::class, [
-                'label' => 'Mot de passe actuel',
-                'mapped' => false,
-                'attr' => [
-                    'placeholder' => 'Indiquez votre mot de passe actuel',
-                ]
-            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
@@ -49,7 +39,6 @@ class PasswordUserTypeForm extends AbstractType
                     'class' => 'btn btn-success',
                 ]
             ])
-
         ;
     }
 
@@ -57,7 +46,6 @@ class PasswordUserTypeForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'passwordHasher' => null,
         ]);
     }
 }

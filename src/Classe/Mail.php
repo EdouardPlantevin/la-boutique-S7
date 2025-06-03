@@ -10,6 +10,7 @@ class Mail
 
     #Templates path > src/Mail/xxx.html
     const REGISTER_SUCCESS = 'welcome.html';
+    const FORGOT_PASSWORD = 'password.html';
 
     public function send(string $to, string $fullname, string $subject, string $template, array|null $vars = null): bool
     {
